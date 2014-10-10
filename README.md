@@ -24,6 +24,17 @@ Execute following line
 
 ## Usage
 
+### require(packageName)
+
+Parameters:
+- `packageName`: a String matching the package name or a relative path to some file. The path is relative to the *node_modules* directory.
+
+Returns a package.
+
+    modules.require('mypackage');
+    modules.require('../folder/someFile');
+    modules.require('../package.json');
+
 ### match(regexp)
 
 Parameters:
