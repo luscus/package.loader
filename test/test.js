@@ -7,6 +7,11 @@ console.log(plugin.dependencies);
 
 
 console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+console.log('Test require("package.root.finder")');
+
+console.log(plugin.require('package.root.finder'));
+
+console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 console.log('Test match(/^package.*/)');
 
 console.log(plugin.match(/^package.*/));

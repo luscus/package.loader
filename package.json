@@ -2,7 +2,7 @@
     "author": "https://github.com/luscus/package.module.finder/graphs/contributors",
     "name": "package.module.finder",
     "description": "Searches the npm/bower production dependecies of the root package in order to find modules matching the provided filter.",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "keywords": [
         "root",
         "plugin",
