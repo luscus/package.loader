@@ -1,7 +1,7 @@
 {
   "name": "package.module.finder",
   "license": "MIT/X",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "homepage": "https://github.com/luscus/package.module.finder",
   "author": "https://github.com/luscus/package.module.finder/graphs/contributors",
   "description": "Searches the npm/bower production dependecies of the root package in order to find modules matching the provided filter.",
