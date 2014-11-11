@@ -22,7 +22,7 @@ module.exports = function(grunt) {
           bail: true,
           reporter: 'dot'
         },
-        src: ['test/**/*.js']
+        src: ['test/**/*.spec.js']
       }
     }
   });

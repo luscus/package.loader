@@ -1,7 +1,7 @@
 {
   "name": "package.module.finder",
-  "license": "MIT/X",
-  "version": "0.1.6",
+  "license": "MIT",
+  "version": "0.1.7",
   "homepage": "https://github.com/luscus/package.module.finder",
   "author": "https://github.com/luscus/package.module.finder/graphs/contributors",
   "description": "Searches the npm/bower production dependecies of the root package in order to find modules matching the provided filter.",
@@ -15,7 +15,8 @@
     "dependencies"
   ],
   "dependencies": {
-    "package.root.finder": "0.1.2"
+    "package.root.finder": "0.1.2",
+    "a": "0.4.6"
   },
   "devDependencies": {
     "chai": "1.9.1",
@@ -23,8 +24,7 @@
     "grunt-contrib-jshint": "0.10.0",
     "grunt-mocha-test": "0.10.2",
     "load-grunt-tasks": "0.6.0",
-    "mocha": "1.21.4",
-    "mockery": "1.4.0"
+    "mocha": "1.21.4"
   },
   "repository": {
     "type": "git",
