@@ -7,9 +7,6 @@
 Searches the npm/bower production dependecies of the root package in order to find modules matching the provided filter.
 
 
-Take a look to the [TODO](https://github.com/luscus/package.module.finder/blob/master/TODO.md) if you want to help towards the next steps.
-
-
 
 ## Installation
 
