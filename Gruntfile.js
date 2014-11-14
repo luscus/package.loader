@@ -3,11 +3,8 @@ module.exports = function(grunt) {
   // load all grunt tasks matching the `grunt-*` pattern
   require('load-grunt-tasks')(grunt);
 
-  // Add the grunt-mocha-test tasks.
-  grunt.loadNpmTasks('grunt-mocha-test');
-
   // Default task(s).
-  grunt.registerTask('default', ['jshint', 'mochaTest']);
+  grunt.registerTask('default', ['jshint', 'mochaTest', 'license-report']);
   grunt.registerTask('test', ['mochaTest']);
 
   // Project configuration.
@@ -24,6 +21,9 @@ module.exports = function(grunt) {
         },
         src: ['test/**/*.spec.js']
       }
+    },
+    "license-report": {
+      target: './licenses/report.html'
     }
   });
 };
