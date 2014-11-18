@@ -1,0 +1,58 @@
+{
+  "name": "package.module.finder",
+  "version": "0.1.7",
+  "dependencies": {
+    "a": {
+      "version": "0.4.6",
+      "from": "a@0.4.6",
+      "dependencies": {
+        "a_mock": {
+          "version": "0.1.4",
+          "from": "a_mock@0.1.4",
+          "dependencies": {
+            "deferred": {
+              "version": "0.7.1",
+              "from": "deferred@0.7.1",
+              "dependencies": {
+                "es5-ext": {
+                  "version": "0.10.4",
+                  "from": "es5-ext@~0.10.2",
+                  "dependencies": {
+                    "es6-iterator": {
+                      "version": "0.1.1",
+                      "from": "es6-iterator@~0.1.1"
+                    },
+                    "es6-symbol": {
+                      "version": "0.1.1",
+                      "from": "es6-symbol@0.1.x"
+                    }
+                  }
+                },
+                "event-emitter": {
+                  "version": "0.3.1",
+                  "from": "event-emitter@~0.3.1"
+                },
+                "d": {
+                  "version": "0.1.1",
+                  "from": "d@~0.1.1"
+                },
+                "next-tick": {
+                  "version": "0.2.2",
+                  "from": "next-tick@~0.2.2"
+                }
+              }
+            }
+          }
+        },
+        "a_test": {
+          "version": "0.1.8",
+          "from": "a_test@0.1.8"
+        }
+      }
+    },
+    "package.root.finder": {
+      "version": "0.1.2",
+      "from": "package.root.finder@0.1.2"
+    }
+  }
+}
