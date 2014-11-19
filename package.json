@@ -1,9 +1,9 @@
 {
-  "name": "package.module.finder",
+  "name": "package.loader",
   "license": "MIT",
-  "version": "0.1.7",
-  "homepage": "https://github.com/luscus/package.module.finder",
-  "author": "https://github.com/luscus/package.module.finder/graphs/contributors",
+  "version": "0.2.0",
+  "homepage": "https://github.com/luscus/package.loader",
+  "author": "https://github.com/luscus/package.loader/graphs/contributors",
   "description": "Search/loads dependencies from the ROOT, PARENT or SELF packages.",
   "keywords": [
     "root",
@@ -29,11 +29,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/luscus/package.module.finder.git"
+    "url": "git://github.com/luscus/package.loader.git"
   },
   "scripts": {
     "test": "grunt test"
   },
-  "bugs": "https://github.com/luscus/package.module.finder/issues",
-  "main": "./lib/package.module.finder.js"
+  "bugs": "https://github.com/luscus/package.loader/issues",
+  "main": "./lib/package.loader.js"
 }

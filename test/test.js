@@ -1,5 +1,6 @@
-var plugin = require('../lib/package.module.finder');
+var plugin = require('../lib/package.loader');
 
+console.log(plugin);
 
 console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 console.log('dependencies:');

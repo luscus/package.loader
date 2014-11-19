@@ -1,8 +1,8 @@
-# package.module.finder
+# package.loader
 
-[![NPM version](https://badge.fury.io/js/package.module.finder.svg)](http://badge.fury.io/js/package.module.finder)
-[![dependencies](https://david-dm.org/luscus/package.module.finder.svg)](https://david-dm.org/luscus/package.module.finder)
-[![devDependency Status](https://david-dm.org/luscus/package.module.finder/dev-status.svg?theme=shields.io)](https://david-dm.org/luscus/package.module.finder#info=devDependencies)
+[![NPM version](https://badge.fury.io/js/package.loader.svg)](http://badge.fury.io/js/package.loader)
+[![dependencies](https://david-dm.org/luscus/package.loader.svg)](https://david-dm.org/luscus/package.loader)
+[![devDependency Status](https://david-dm.org/luscus/package.loader/dev-status.svg?theme=shields.io)](https://david-dm.org/luscus/package.loader#info=devDependencies)
 
 Searches the npm/bower production dependecies of the root package in order to find modules matching the provided filter.
 
@@ -14,11 +14,11 @@ Searches the npm/bower production dependecies of the root package in order to fi
 
 Execute following line
 
-    npm install package.module.finder@0.1.x --save
+    npm install package.loader@0.1.x --save
 
 ### Require module
 
-    var modules = require('package.module.finder');
+    var modules = require('package.loader');
 
 
 ## Usage
