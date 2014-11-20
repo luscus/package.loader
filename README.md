@@ -4,7 +4,40 @@
 [![dependencies](https://david-dm.org/luscus/package.loader.svg)](https://david-dm.org/luscus/package.loader)
 [![devDependency Status](https://david-dm.org/luscus/package.loader/dev-status.svg?theme=shields.io)](https://david-dm.org/luscus/package.loader#info=devDependencies)
 
-Searches the npm/bower production dependecies of the root package in order to find modules matching the provided filter.
+Search/loads dependencies from the ROOT, PARENT or SELF packages:
+
+- `SELF`: the package with has `package.loader` as dependency
+- `PARENT`: the parent package to `SELF`
+- `ROOT`: the first package in the package hierarchy
+
+
+    <ROOT>
+      |_ node_modules
+            |
+            |_ <PARENT>
+            |  |_ node_modules
+            |    |
+            |    |_ <SELF>
+            |    |  |_ node_modules
+            |    |    |
+            |    |    |_ package.module.finder
+            |    |    |
+            |    |    |_ <SELF package 1>
+            |    |    |_ <SELF package 2>
+            |    |    |_ <SELF package 3>
+            |    |
+            |    |_ <PARENT package 1>
+            |    |_ <PARENT package 2>
+            |
+            |_ <ROOT package 1>
+            |_ <ROOT package 2>
+            |_ <ROOT package 3>
+
+`PARENT` and `ROOT` may be the same packages.
+
+Each provided method is to be found in three flavors: derected towards `SELF`, `PARENT` or `ROOT`.
+
+This library can be used to implement support for a plugin system based on package names conventions.
 
 
 
@@ -14,64 +47,66 @@ Searches the npm/bower production dependecies of the root package in order to fi
 
 Execute following line
 
-    npm install package.loader@0.1.x --save
+    npm install package.loader --save
 
 ### Require module
 
-    var modules = require('package.loader');
+    var loader = require('package.loader');
 
 
 ## Usage
 
-### require(packageName)
-
-Parameters:
-- `packageName`: a String matching the package name or a relative path to some file. The path is relative to the *node_modules* directory.
-
-Returns a package.
-
-    modules.require('mypackage');
-    modules.require('../folder/someFile');
-    modules.require('../package.json');
-
-### match(regexp)
+### match, matchInParent, matchInRoot
 
 Parameters:
 - `regexp`: a regular expression
 
-Return an Array with matching module names or an empty Array if no match was found.
+Return an Array with matching package names or an empty Array if no match was found.
 
     // return a list of dependencies which name starts with 'service'
-    modules.match(/^service.*/);
+    loader.match(/^service.*/);
 
-### load(regexp, bowerPath)
+### require, requireFromParent, requireFromRoot
 
 Parameters:
-- `regexp`: a regular expression
-- `bowerPath`: a path relative to the bower module root, pointing to the file to require
+- `package`: a regular expression or a string
 
-Loads one requested plugin, but the regexp has to have a unique match.
+Loads one requested plugin, but the regexp has to have an unique match.
 
 Throws an error if too many or no plugin was found.
 
-    // return a list of dependencies which name starts with 'service'
-    var myplugin = modules.load(/^service.*/);
+    loader.require('mypackage');
+    loader.require('../tools/mytool');
+    loader.require(/^service.*/);
 
-### loadAll(regexp, bowerPath)
+### load, loadFromParent, loadFromRoot
 
 Parameters:
 - `regexp`: a regular expression
-- `bowerPath`: a path relative to the bower module root, pointing to the file to require
 
-Loads all matching plugin in a map.
+Loads one requested plugin, but the regexp has to have a at least one match.
 
 Throws an error if no plugin was found.
 
     // return a list of dependencies which name starts with 'service'
-    var myplugins = modules.loadAll(/^service.*/);
+    var myplugin = loader.load(/^service.*/);
 
-    // access plugin with their names
-    myplugins['service-probe'] ...
+### mock, mockInParent, mockInRoot
+
+Parameters:
+- `packageName`: a package name
+- `packageExport`: the Object to be returned by the mocked package
+
+Enables to mock packages in the dependencies from SELF, PARENT or ROOT.
+This can be used for testing.
+
+    // define a mock in SELF
+    loader.mock('hello.world', function () {console.log('hello world')});
+
+    // access mock
+    var mock = loader.require('hello.world')
+
+    mock(); // prints "hello world"
 
 
 
