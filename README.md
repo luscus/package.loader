@@ -20,7 +20,7 @@ Search/loads dependencies from the ROOT, PARENT or SELF packages:
             |    |_ SELF
             |    |  |_ node_modules
             |    |    |
-            |    |    |_ package.module.finder
+            |    |    |_ package.loader
             |    |    |_ SELF.dependency.1
             |    |    |_ SELF.dependency.2
             |    |    |_ SELF.dependency.3
