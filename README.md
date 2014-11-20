@@ -6,7 +6,7 @@
 
 Search/loads dependencies from the ROOT, PARENT or SELF packages:
 
-- `SELF`: the package with has `package.loader` as dependency
+- `SELF`: the package which has `package.loader` as dependency
 - `PARENT`: the parent package to `SELF`
 - `ROOT`: the first package in the package hierarchy
 
