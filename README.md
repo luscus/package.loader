@@ -10,28 +10,28 @@ Search/loads dependencies from the ROOT, PARENT or SELF packages:
 - `PARENT`: the parent package to `SELF`
 - `ROOT`: the first package in the package hierarchy
 
-
-    <ROOT>
+<pre>
+    ROOT
       |_ node_modules
             |
-            |_ <PARENT>
+            |_ PARENT
             |  |_ node_modules
             |    |
-            |    |_ <SELF>
+            |    |_ SELF
             |    |  |_ node_modules
             |    |    |
             |    |    |_ package.module.finder
-            |    |    |
-            |    |    |_ <SELF package 1>
-            |    |    |_ <SELF package 2>
-            |    |    |_ <SELF package 3>
+            |    |    |_ SELF.dependency.1
+            |    |    |_ SELF.dependency.2
+            |    |    |_ SELF.dependency.3
             |    |
-            |    |_ <PARENT package 1>
-            |    |_ <PARENT package 2>
+            |    |_ PARENT.dependency.1
+            |    |_ PARENT.dependency.1
             |
-            |_ <ROOT package 1>
-            |_ <ROOT package 2>
-            |_ <ROOT package 3>
+            |_ ROOT.dependency.1
+            |_ ROOT.dependency.2
+            |_ ROOT.dependency.3
+</pre>
 
 `PARENT` and `ROOT` may be the same packages.
 
