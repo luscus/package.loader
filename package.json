@@ -7,6 +7,8 @@
   "description": "Search/loads dependencies from the ROOT, PARENT or SELF packages.",
   "keywords": [
     "root",
+    "package",
+    "hierarchy",
     "plugin",
     "module",
     "find",
