@@ -26,7 +26,7 @@ Search/loads dependencies from the ROOT, PARENT or SELF packages:
             |    |    |_ SELF.dependency.3
             |    |
             |    |_ PARENT.dependency.1
-            |    |_ PARENT.dependency.1
+            |    |_ PARENT.dependency.2
             |
             |_ ROOT.dependency.1
             |_ ROOT.dependency.2
