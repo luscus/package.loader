@@ -1,41 +1,41 @@
 {
-  "name": "package.loader",
-  "license": "MIT",
-  "version": "0.2.0",
-  "homepage": "https://github.com/luscus/package.loader",
-  "author": "https://github.com/luscus/package.loader/graphs/contributors",
-  "description": "Search/loads dependencies from the ROOT, PARENT or SELF packages.",
-  "keywords": [
-    "root",
-    "package",
-    "hierarchy",
-    "plugin",
-    "module",
-    "find",
-    "load",
-    "search",
-    "dependency",
-    "dependencies"
-  ],
-  "dependencies": {
-    "a": "0.4.6"
-  },
-  "devDependencies": {
-    "chai": "1.9.1",
-    "grunt": "0.4.5",
-    "grunt-contrib-jshint": "0.10.0",
-    "grunt-license-report": "0.0.2",
-    "grunt-mocha-test": "0.10.2",
-    "load-grunt-tasks": "0.6.0",
-    "mocha": "1.21.4"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/luscus/package.loader.git"
-  },
-  "scripts": {
-    "test": "grunt test"
-  },
-  "bugs": "https://github.com/luscus/package.loader/issues",
-  "main": "./lib/package.loader.js"
+	"name": "package.loader",
+	"license": "MIT",
+	"version": "0.2.0",
+	"homepage": "https://github.com/luscus/package.loader",
+	"author": "https://github.com/luscus/package.loader/graphs/contributors",
+	"description": "Search/loads dependencies from the ROOT, PARENT or SELF packages.",
+	"keywords": [
+		"root",
+		"package",
+		"hierarchy",
+		"plugin",
+		"module",
+		"find",
+		"load",
+		"search",
+		"dependency",
+		"dependencies"
+	],
+	"dependencies": {
+		"a": "0.4.6"
+	},
+	"devDependencies": {
+		"chai": "1.10.0",
+		"grunt": "0.4.5",
+		"grunt-contrib-jshint": "0.10.0",
+		"grunt-license-report": "0.0.2",
+		"grunt-mocha-test": "0.12.4",
+		"load-grunt-tasks": "1.0.0",
+		"mocha": "2.0.1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/luscus/package.loader.git"
+	},
+	"scripts": {
+		"test": "grunt test"
+	},
+	"bugs": "https://github.com/luscus/package.loader/issues",
+	"main": "./lib/package.loader.js"
 }
