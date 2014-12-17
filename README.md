@@ -4,17 +4,16 @@
 [![dependencies](https://david-dm.org/luscus/package.loader.svg)](https://david-dm.org/luscus/package.loader)
 [![devDependency Status](https://david-dm.org/luscus/package.loader/dev-status.svg?theme=shields.io)](https://david-dm.org/luscus/package.loader#info=devDependencies)
 
-Search/loads dependencies from the ROOT, PARENT or SELF packages:
+Search/loads dependencies from the ROOT or SELF packages:
 
 - `SELF`: the package which has `package.loader` as dependency
-- `PARENT`: the parent package to `SELF`
 - `ROOT`: the first package in the package hierarchy
 
 <pre>
     ROOT
       |_ node_modules
             |
-            |_ PARENT
+            |_ PACKAGE_X
             |  |_ node_modules
             |    |
             |    |_ SELF
@@ -25,17 +24,17 @@ Search/loads dependencies from the ROOT, PARENT or SELF packages:
             |    |    |_ SELF.dependency.2
             |    |    |_ SELF.dependency.3
             |    |
-            |    |_ PARENT.dependency.1
-            |    |_ PARENT.dependency.2
+            |    |_ PACKAGE_X.dependency.1
+            |    |_ PACKAGE_X.dependency.2
             |
             |_ ROOT.dependency.1
             |_ ROOT.dependency.2
             |_ ROOT.dependency.3
 </pre>
 
-`PARENT` and `ROOT` may be the same packages.
+`SELF` and `ROOT` may be the same packages.
 
-Each provided method is to be found in three flavors: derected towards `SELF`, `PARENT` or `ROOT`.
+Each provided method is to be found in two flavors: directed towards `SELF` or `ROOT`.
 
 This library can be used to implement support for a plugin system based on package names conventions.
 
@@ -56,7 +55,7 @@ Execute following line
 
 ## Usage
 
-### match, matchInParent, matchInRoot
+### match, matchInRoot
 
 Parameters:
 - `regexp`: a regular expression
@@ -66,7 +65,7 @@ Return an Array with matching package names or an empty Array if no match was fo
     // return a list of dependencies which name starts with 'service'
     loader.match(/^service.*/);
 
-### require, requireFromParent, requireFromRoot
+### require, requireFromRoot
 
 Parameters:
 - `package`: a regular expression or a string
@@ -79,7 +78,7 @@ Throws an error if too many or no plugin was found.
     loader.require('../tools/mytool');
     loader.require(/^service.*/);
 
-### load, loadFromParent, loadFromRoot
+### load, loadFromRoot
 
 Parameters:
 - `regexp`: a regular expression
@@ -91,13 +90,13 @@ Throws an error if no plugin was found.
     // return a list of dependencies which name starts with 'service'
     var myplugin = loader.load(/^service.*/);
 
-### mock, mockInParent, mockInRoot
+### mock, mockInRoot
 
 Parameters:
 - `packageName`: a package name
 - `packageExport`: the Object to be returned by the mocked package
 
-Enables to mock packages in the dependencies from SELF, PARENT or ROOT.
+Enables to mock packages in the dependencies from SELF or ROOT.
 This can be used for testing.
 
     // define a mock in SELF

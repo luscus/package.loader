@@ -9,10 +9,6 @@ describe('Mocking:', function(){
     loader.mock.should.be.a('function');
   });
 
-  it('mockInParent should be a method', function(){
-    loader.mockInParent.should.be.a('function');
-  });
-
   it('mockInRoot should be a method', function(){
     loader.mockInRoot.should.be.a('function');
   });
@@ -30,20 +26,6 @@ describe('Mocking:', function(){
 
     self.should.be.a('function');
 		self().should.equal(selfMockResponse);
-  });
-
-  it('mock a method in parent', function(){
-		var selfMockResponse = 'loader.parent called';
-
-		loader.mockInParent('loader.parent', function () {
-			return selfMockResponse;
-		});
-
-    var parent = loader.requireFromParent('loader.parent');
-
-
-    parent.should.be.a('function');
-		parent().should.equal(selfMockResponse);
   });
 
   it('mock a method in root', function(){
