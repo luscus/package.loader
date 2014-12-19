@@ -5,10 +5,14 @@
 
 var Path     = require('path'),
     should   = require('chai').should(),
-    loader   = require('../../lib/package.loader.js');
+    crawler  = require('../../lib/tools/crawler'),
+    aliases  = require('./aliases');
+
+// rerun in dev mode
+crawler.crawl(true);
 
 
-describe('Mocking:', function(){
+describe('Aliases:', function(){
 
   it('mock should be a method', function(){
     loader.mock.should.be.a('function');
