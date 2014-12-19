@@ -1,6 +1,11 @@
+/* jshint node:true */
+/* global describe */
+/* global it */
+'use strict';
+
 var Path     = require('path'),
     should   = require('chai').should(),
-		loader   = require('../lib/package.loader');
+    loader   = require('../../lib/package.loader.js');
 
 
 describe('Mocking:', function(){
@@ -15,31 +20,31 @@ describe('Mocking:', function(){
 
 
   it('mock a method in self', function(){
-		var selfMockResponse = 'loader.self called';
+    var selfMockResponse = 'loader.self called';
 
-		loader.mock('loader.self', function () {
-			return selfMockResponse;
-		});
+    loader.mock('loader.self', function () {
+      return selfMockResponse;
+    });
 
     var self = loader.require('loader.self');
 
 
     self.should.be.a('function');
-		self().should.equal(selfMockResponse);
+    self().should.equal(selfMockResponse);
   });
 
   it('mock a method in root', function(){
-		var selfMockResponse = 'loader.root called';
+    var selfMockResponse = 'loader.root called';
 
-		loader.mockInRoot('loader.root', function () {
-			return selfMockResponse;
-		});
+    loader.mockInRoot('loader.root', function () {
+      return selfMockResponse;
+    });
 
     var root = loader.requireFromRoot('loader.root');
 
 
     root.should.be.a('function');
-		root().should.equal(selfMockResponse);
+    root().should.equal(selfMockResponse);
   });
 
 });
