@@ -23,8 +23,6 @@ describe('Tool Crawler -', function(){
   var packagePath = __dirname + Path.sep + '..' + Path.sep + '..',
       inspected   = crawler.inspect(packagePath);
 
-  console.log(inspected);
-
   it('inspect own package folder', function(){
     inspected.should.be.an('object');
   });
@@ -34,7 +32,7 @@ describe('Tool Crawler -', function(){
   });
 
   it('packagePath has path property', function(){
-    inspected.should.have.property('path', packagePath);
+    inspected.should.have.property('path', Path.normalize(packagePath));
   });
 
   it('packagePath has dependencies property', function(){
