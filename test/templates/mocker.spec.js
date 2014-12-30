@@ -35,17 +35,17 @@ describe('Mocking:', function(){
   });
 
   it('mock a method in root', function(){
-		var selfMockResponse = 'loader.root called';
+		var rootMockResponse = 'loader.root called';
 
 		loader.mockInRoot('loader.root', function () {
-			return selfMockResponse;
+			return rootMockResponse;
 		});
 
     var root = loader.requireFromRoot('loader.root');
 
 
     root.should.be.a('function');
-		root().should.equal(selfMockResponse);
+		root().should.equal(rootMockResponse);
   });
 
 });

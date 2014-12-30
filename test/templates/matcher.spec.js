@@ -3,48 +3,59 @@
 /* global it */
 'use strict';
 
-var Path     = require('path'),
-    should   = require('chai').should(),
-    loader   = require('../../lib/package.loader.js');
+require('chai').should();
+
+var matcher  = require('../../lib/templates/matcher')({}),
+    crawler  = require('../../lib/tools/crawler'),
+    aliases  = require('../../lib/tools/aliases'),
+    loader   = require('../../lib/package.loader');
+
+// rerun in dev mode
+crawler.crawl(true);
 
 
-describe('Mocking:', function(){
+describe('Matching:', function() {
 
-  it('mock should be a method', function(){
-    loader.mock.should.be.a('function');
+  it('match should be a method', function(){
+    loader.match.should.be.a('function');
   });
 
-  it('mockInRoot should be a method', function(){
-    loader.mockInRoot.should.be.a('function');
+  it('matchInRoot should be a method', function(){
+    loader.matchInRoot.should.be.a('function');
   });
 
+  it('find grunt plugins in SELF', function(){
+    var plugins = matcher(/^grunt-.*/, aliases.SELF),
+        results = loader.match(/^grunt-.*/),
+        error   = false;
 
-  it('mock a method in self', function(){
-    var selfMockResponse = 'loader.self called';
+    plugins.should.deep.equal(results);
 
-    loader.mock('loader.self', function () {
-      return selfMockResponse;
+    plugins.forEach(function pluginIterator (pluginName) {
+      if (pluginName.indexOf('grunt-') !== 0)
+        error = true;
     });
 
-    var self = loader.require('loader.self');
-
-
-    self.should.be.a('function');
-    self().should.equal(selfMockResponse);
+    error.should.equal(false);
   });
 
-  it('mock a method in root', function(){
-    var selfMockResponse = 'loader.root called';
+  it('find grunt plugins in ROOT', function(){
+    var plugins = matcher(/^grunt-.*/, aliases.ROOT),
+        results = loader.matchInRoot(/^grunt-.*/),
+        error   = false;
 
-    loader.mockInRoot('loader.root', function () {
-      return selfMockResponse;
+    plugins.should.deep.equal(results);
+
+    plugins.forEach(function pluginIterator (pluginName) {
+      if (pluginName.indexOf('grunt-') !== 0)
+        error = true;
     });
 
-    var root = loader.requireFromRoot('loader.root');
+    error.should.equal(false);
+  });
 
-
-    root.should.be.a('function');
-    root().should.equal(selfMockResponse);
+  it('match with invalid regular expression', function(){
+    matcher.should.Throw(Error);
   });
 
 });

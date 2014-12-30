@@ -3,8 +3,9 @@
 /* global it */
 'use strict';
 
+require('chai').should();
+
 var Path     = require('path'),
-    should   = require('chai').should(),
     info     = require('../../package.json'),
     crawler  = require('../../lib/tools/crawler'),
     aliases  = require('../../lib/tools/aliases');

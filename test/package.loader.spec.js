@@ -3,8 +3,9 @@
 /* global it */
 'use strict';
 
+require('chai').should();
+
 var Path     = require('path'),
-    should   = require('chai').should(),
     loader   = require('../lib/package.loader');
 
 
