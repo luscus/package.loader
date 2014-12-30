@@ -5,7 +5,7 @@
 
 var Path     = require('path'),
     should   = require('chai').should(),
-    loader   = require('../lib/package.loader.js');
+    loader   = require('../lib/package.loader');
 
 
 describe('Mocking:', function(){
