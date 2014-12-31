@@ -35,6 +35,10 @@ describe('Tool Crawler -', function(){
     inspected.should.have.property('path', Path.normalize(packagePath));
   });
 
+  it('packagePath has main property', function(){
+    inspected.should.have.property('main');
+  });
+
   it('packagePath has dependencies property', function(){
     inspected.should.have.property('dependencies');
     inspected.dependencies.should.be.an('object');
