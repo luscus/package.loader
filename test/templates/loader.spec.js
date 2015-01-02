@@ -5,47 +5,61 @@
 
 require('chai').should();
 
-var Path     = require('path'),
-    loader   = require('../../lib/package.loader.js');
+var loader    = require('../../lib/templates/loader')({}),
+    crawler   = require('../../lib/tools/crawler'),
+    aliases   = require('../../lib/tools/aliases'),
+    loaderLib = require('../../lib/package.loader');
 
 
-describe('Mocking:', function(){
+// rerun in dev mode
+crawler.crawl(true);
 
-  it('mock should be a method', function(){
-    loader.mock.should.be.a('function');
+/*
+loaderLib.mock('loader.self', function () {
+  return 'loader.self called';
+});
+
+loaderLib.mockInRoot('loader.root', function () {
+  return 'loader.root called';
+});
+*/
+
+describe('Matching:', function() {
+
+  it('load should be a method', function() {
+    loaderLib.load.should.be.a('function');
   });
 
-  it('mockInRoot should be a method', function(){
-    loader.mockInRoot.should.be.a('function');
+  it('loadFromRoot should be a method', function() {
+    loaderLib.loadFromRoot.should.be.a('function');
   });
 
-
-  it('mock a method in self', function(){
-    var selfMockResponse = 'loader.self called';
-
-    loader.mock('loader.self', function () {
-      return selfMockResponse;
-    });
-
-    var self = loader.require('loader.self');
-
-
-    self.should.be.a('function');
-    self().should.equal(selfMockResponse);
+  it('require should be a method', function() {
+    loaderLib.require.should.be.a('function');
   });
 
-  it('mock a method in root', function(){
-    var selfMockResponse = 'loader.root called';
+  it('requireFromRoot should be a method', function() {
+    loaderLib.requireFromRoot.should.be.a('function');
+  });
 
-    loader.mockInRoot('loader.root', function () {
-      return selfMockResponse;
-    });
+  it('loadPackages with invalid regular expression', function() {
+    loader.loadPackages.should.Throw(Error);
+  });
 
-    var root = loader.requireFromRoot('loader.root');
+  it('resolvePackageName with invalid regular expression', function() {
+    loader.resolvePackageName.should.Throw(Error);
+  });
 
+  it('load package "a" from SELF', function() {
+    var pack = loader.loadPackages(/^grunt$/, loaderLib.SELF);
 
-    root.should.be.a('function');
-    root().should.equal(selfMockResponse);
+    //console.log(pack);
+  });
+
+  it('load packages "grunt-" from SELF', function() {
+    var pack = loader.loadPackages(/^[acm].*/, loaderLib.SELF);
+
+     //console.log(pack);
   });
 
 });
