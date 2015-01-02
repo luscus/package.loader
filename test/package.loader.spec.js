@@ -5,47 +5,60 @@
 
 require('chai').should();
 
-var Path     = require('path'),
-    loader   = require('../lib/package.loader');
+var loaderLib   = require('../lib/package.loader');
 
 
-describe('Mocking:', function(){
+describe('Loader Library:', function() {
+
+  it('should have property "hierarchy"', function(){
+    loaderLib.should.have.property('hierarchy');
+    loaderLib.hierarchy.should.be.an('array');
+  });
+
+  it('should have property "ROOT"', function(){
+    loaderLib.should.have.property('ROOT');
+    loaderLib.ROOT.should.be.an('object');
+  });
+
+  it('should have property "SELF"', function(){
+    loaderLib.should.have.property('ROOT');
+    loaderLib.SELF.should.be.an('object');
+  });
+
+  it('match should be a method', function(){
+    loaderLib.match.should.be.a('function');
+  });
+
+  it('matchInRoot should be a method', function(){
+    loaderLib.matchInRoot.should.be.a('function');
+  });
 
   it('mock should be a method', function(){
-    loader.mock.should.be.a('function');
+    loaderLib.mock.should.be.a('function');
   });
 
   it('mockInRoot should be a method', function(){
-    loader.mockInRoot.should.be.a('function');
+    loaderLib.mockInRoot.should.be.a('function');
   });
 
-
-  it('mock a method in self', function(){
-    var selfMockResponse = 'loader.self called';
-
-    loader.mock('loader.self', function () {
-      return selfMockResponse;
-    });
-
-    var self = loader.require('loader.self');
-
-
-    self.should.be.a('function');
-    self().should.equal(selfMockResponse);
+  it('isMocked should be a method', function(){
+    loaderLib.isMocked.should.be.a('function');
   });
 
-  it('mock a method in root', function(){
-    var selfMockResponse = 'loader.root called';
+  it('load should be a method', function() {
+    loaderLib.load.should.be.a('function');
+  });
 
-    loader.mockInRoot('loader.root', function () {
-      return selfMockResponse;
-    });
+  it('loadFromRoot should be a method', function() {
+    loaderLib.loadFromRoot.should.be.a('function');
+  });
 
-    var root = loader.requireFromRoot('loader.root');
+  it('require should be a method', function() {
+    loaderLib.require.should.be.a('function');
+  });
 
-
-    root.should.be.a('function');
-    root().should.equal(selfMockResponse);
+  it('requireFromRoot should be a method', function() {
+    loaderLib.requireFromRoot.should.be.a('function');
   });
 
 });
