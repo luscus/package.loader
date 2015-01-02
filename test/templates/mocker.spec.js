@@ -1,4 +1,5 @@
 /* jshint node:true */
+/* jshint expr:true*/
 /* global describe */
 /* global it */
 'use strict';
@@ -7,7 +8,7 @@ require('chai').should();
 
 var dependencies = require('../../lib/tools/dependencies'),
     aliases      = require('../../lib/tools/aliases'),
-    mocked       = require('../../lib/tools/mocked'),
+    mocked       = require('../../lib/data/mocked'),
     loader       = require('../../lib/package.loader');
 
 
@@ -26,14 +27,17 @@ describe('Mocking:', function(){
 		var selfMockResponse = 'loader.self called',
         packagePath      = dependencies.getPackagePath(aliases.SELF.path, 'loader.self');
 
+    // set mocked package
 		loader.mock('loader.self', function () {
 			return selfMockResponse;
 		});
 
+    // check data structures
     mocked.should.have.property(packagePath);
+    aliases.SELF.installed.indexOf('loader.self').should.be.ok;
 
+    // load mocked package
     var self = loader.require('loader.self');
-
 
     self.should.be.a('function');
 		self().should.equal(selfMockResponse);
@@ -43,17 +47,30 @@ describe('Mocking:', function(){
 		var rootMockResponse = 'loader.root called',
         packagePath      = dependencies.getPackagePath(aliases.ROOT.path, 'loader.root');
 
-		loader.mockInRoot('loader.root', function () {
+    // set mocked package
+    loader.mockInRoot('loader.root', function () {
 			return rootMockResponse;
 		});
 
+    // check data structures
     mocked.should.have.property(packagePath);
+    aliases.ROOT.installed.indexOf('loader.root').should.be.ok;
 
     var root = loader.requireFromRoot('loader.root');
 
-
+    // load mocked package
     root.should.be.a('function');
 		root().should.equal(rootMockResponse);
   });
 
+
+  it('check if package "loader.root" is a mock', function(){
+    var packagePath      = dependencies.getPackagePath(aliases.ROOT.path, 'loader.root');
+
+    loader.isMocked(packagePath).should.be.true;
+
+    loader.isMocked('').should.be.false;
+    loader.isMocked(undefined).should.be.false;
+    loader.isMocked(null).should.be.false;
+  });
 });
