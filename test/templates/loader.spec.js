@@ -8,7 +8,10 @@ require('chai').should();
 var loader    = require('../../lib/templates/loader')({}),
     crawler   = require('../../lib/tools/crawler'),
     aliases   = require('../../lib/tools/aliases'),
+    mocked    = require('../../lib/data/mocked'),
     loaderLib = require('../../lib/package.loader');
+
+
 
 
 // rerun in dev mode
@@ -23,6 +26,11 @@ loaderLib.mockInRoot('loader.root', function () {
   return 'loader.root called';
 });
 */
+
+loaderLib.mock('loader.self', function () {
+  return 'loader.self called';
+});
+
 
 describe('Matching:', function() {
 
@@ -57,9 +65,9 @@ describe('Matching:', function() {
   });
 
   it('load packages "grunt-" from SELF', function() {
-    var pack = loader.loadPackages(/^[acm].*/, loaderLib.SELF);
+    var pack = loader.loadPackages(/^[alcm].*/, loaderLib.SELF);
 
-     //console.log(pack);
+     console.log(loaderLib.SELF.installed, Object.keys(pack),mocked);
   });
 
 });
