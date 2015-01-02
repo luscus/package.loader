@@ -18,7 +18,6 @@
 		"dependencies"
 	],
 	"dependencies": {
-		"a": "0.4.6"
 	},
 	"devDependencies": {
 		"chai": "1.10.0",

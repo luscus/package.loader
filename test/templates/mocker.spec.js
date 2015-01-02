@@ -5,8 +5,10 @@
 
 require('chai').should();
 
-var Path     = require('path'),
-		loader   = require('../../lib/package.loader');
+var dependencies = require('../../lib/tools/dependencies'),
+    aliases      = require('../../lib/tools/aliases'),
+    mocked       = require('../../lib/tools/mocked'),
+    loader       = require('../../lib/package.loader');
 
 
 describe('Mocking:', function(){
@@ -21,11 +23,14 @@ describe('Mocking:', function(){
 
 
   it('mock a method in self', function(){
-		var selfMockResponse = 'loader.self called';
+		var selfMockResponse = 'loader.self called',
+        packagePath      = dependencies.getPackagePath(aliases.SELF.path, 'loader.self');
 
 		loader.mock('loader.self', function () {
 			return selfMockResponse;
 		});
+
+    mocked.should.have.property(packagePath);
 
     var self = loader.require('loader.self');
 
@@ -35,11 +40,14 @@ describe('Mocking:', function(){
   });
 
   it('mock a method in root', function(){
-		var rootMockResponse = 'loader.root called';
+		var rootMockResponse = 'loader.root called',
+        packagePath      = dependencies.getPackagePath(aliases.ROOT.path, 'loader.root');
 
 		loader.mockInRoot('loader.root', function () {
 			return rootMockResponse;
 		});
+
+    mocked.should.have.property(packagePath);
 
     var root = loader.requireFromRoot('loader.root');
 
