@@ -25,7 +25,7 @@ describe('Tool Dependencies -', function(){
   });
 
   it('filter list', function(){
-    var whitelist = ['a'],
+    var whitelist = ['grunt'],
         result    = dependencies.filter(whitelist, packages);
 
     result.should.be.an('array');
