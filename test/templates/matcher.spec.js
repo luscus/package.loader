@@ -5,10 +5,10 @@
 
 require('chai').should();
 
-var matcher  = require('../../lib/templates/matcher')({}),
-    crawler  = require('../../lib/tools/crawler'),
-    aliases  = require('../../lib/tools/aliases'),
-    loader   = require('../../lib/package.loader');
+var dependencies = require('../../lib/tools/dependencies'),
+    crawler      = require('../../lib/tools/crawler'),
+    aliases      = require('../../lib/tools/aliases'),
+    loader       = require('../../lib/package.loader');
 
 // rerun in dev mode
 crawler.crawl(true);
@@ -25,7 +25,7 @@ describe('Matching:', function() {
   });
 
   it('find grunt plugins in SELF', function(){
-    var plugins = matcher(/^grunt-.*/, aliases.SELF),
+    var plugins = dependencies.matches(/^grunt-.*/, aliases.SELF),
         results = loader.match(/^grunt-.*/),
         error   = false;
 
@@ -40,7 +40,7 @@ describe('Matching:', function() {
   });
 
   it('find grunt plugins in ROOT', function(){
-    var plugins = matcher(/^grunt-.*/, aliases.ROOT),
+    var plugins = dependencies.matches(/^grunt-.*/, aliases.ROOT),
         results = loader.matchInRoot(/^grunt-.*/),
         error   = false;
 
@@ -55,7 +55,7 @@ describe('Matching:', function() {
   });
 
   it('match with invalid regular expression', function(){
-    matcher.should.Throw(Error);
+    dependencies.matches.should.Throw(Error);
   });
 
 });
