@@ -22,6 +22,10 @@ describe('Mocking:', function(){
     loader.mockInRoot.should.be.a('function');
   });
 
+  it('isMocked should be a method', function(){
+    loader.isMocked.should.be.a('function');
+  });
+
 
   it('mock a method in self', function(){
 		var selfMockResponse = 'loader.self called',
