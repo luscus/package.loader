@@ -1,8 +1,13 @@
-# package.loader
+# [package.loader](https://github.com/luscus/package.loader)
 
-[![NPM version](https://badge.fury.io/js/package.loader.svg)](http://badge.fury.io/js/package.loader)
-[![dependencies](https://david-dm.org/luscus/package.loader.svg)](https://david-dm.org/luscus/package.loader)
-[![devDependency Status](https://david-dm.org/luscus/package.loader/dev-status.svg?theme=shields.io)](https://david-dm.org/luscus/package.loader#info=devDependencies)
+[![NPM](https://nodei.co/npm/package.loader.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/package.loader/)
+
+[![NPM version](https://img.shields.io/npm/v/package.loader.svg?style=flat)](https://www.npmjs.com/package/package.loader "View this project on NPM")
+[![David](https://img.shields.io/david/luscus/package.loader.svg?style=flat)](https://david-dm.org/luscus/package.loader)
+[![David](https://img.shields.io/david/dev/luscus/package.loader.svg?style=flat)](https://david-dm.org/luscus/package.loader#info=devDependencies)
+[![NPM license](https://img.shields.io/npm/l/package.loader.svg?style=flat)](https://www.npmjs.com/package/package.loader "View this project on NPM")
+[![Omniref](https://img.shields.io/badge/Omniref-docs-orange.svg?style=flat)](https://www.omniref.com/js/npm/package.loader)
+[![flattr](https://img.shields.io/badge/flattr-donate-yellow.svg?style=flat)](http://flattr.com/thing/3817419/luscus-on-GitHub)
 
 Search/loads dependencies from the ROOT or SELF packages:
 
