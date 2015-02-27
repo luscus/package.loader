@@ -1,7 +1,7 @@
 {
   "name": "package.loader",
   "license": "MIT",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "homepage": "https://github.com/luscus/package.loader",
   "author": "https://github.com/luscus/package.loader/graphs/contributors",
   "description": "Search/loads dependencies from the ROOT or SELF packages.",
