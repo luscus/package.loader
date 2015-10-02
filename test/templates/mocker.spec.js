@@ -9,10 +9,11 @@ require('chai').should();
 var dependencies = require('../../lib/tools/dependencies'),
     aliases      = require('../../lib/tools/aliases'),
     mocked       = require('../../lib/data/mocked'),
+    mocker       = require('../../lib/templates/mocker')({}),
     loader       = require('../../lib/package.loader');
 
 
-describe('Mocking:', function(){
+describe('[' + __filename.substring(__filename.indexOf('/test/') + 1) + '] - mocker ', function() {
 
   it('mock should be a method', function(){
     loader.mock.should.be.a('function');
@@ -76,5 +77,17 @@ describe('Mocking:', function(){
     loader.isMocked('').should.be.false;
     loader.isMocked(undefined).should.be.false;
     loader.isMocked(null).should.be.false;
+  });
+
+  it('should be able to remove one mock', function(){
+
+    mocker.removeMock('loader.plugin.one', aliases.SELF);
+    aliases.ROOT.installed.indexOf('loader.plugin.one').should.be.equals(-1);
+  });
+
+  it('should be able to remove all mocks', function(){
+
+    mocker.removeMocks();
+    aliases.ROOT.installed.indexOf('loader.plugin.one').should.be.equals(-1);
   });
 });

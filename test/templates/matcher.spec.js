@@ -5,6 +5,7 @@
 
 require('chai').should();
 
+var expect       = require('chai').expect;
 var dependencies = require('../../lib/tools/dependencies'),
     crawler      = require('../../lib/tools/crawler'),
     aliases      = require('../../lib/tools/aliases'),
@@ -14,7 +15,7 @@ var dependencies = require('../../lib/tools/dependencies'),
 crawler.crawl(true);
 
 
-describe('Matching:', function() {
+describe('[' + __filename.substring(__filename.indexOf('/test/') + 1) + '] - matcher', function() {
 
   it('match should be a method', function(){
     loader.match.should.be.a('function');
@@ -24,34 +25,44 @@ describe('Matching:', function() {
     loader.matchInRoot.should.be.a('function');
   });
 
-  it('find grunt plugins in SELF', function(){
-    var plugins = dependencies.matches(/^grunt-.*/, aliases.SELF),
-        results = loader.match(/^grunt-.*/),
+  it('matchInExternal should be a method', function(){
+    loader.matchInExternal.should.be.a('function');
+  });
+
+  it('find gulp plugins in SELF', function(){
+    var plugins = dependencies.matches(/^gulp-.*/, aliases.SELF),
+        results = loader.match(/^gulp-.*/),
         error   = false;
 
     plugins.should.deep.equal(results);
 
     plugins.forEach(function pluginIterator (pluginName) {
-      if (pluginName.indexOf('grunt-') !== 0)
+      if (pluginName.indexOf('gulp-') !== 0)
         error = true;
     });
 
     error.should.equal(false);
   });
 
-  it('find grunt plugins in ROOT', function(){
-    var plugins = dependencies.matches(/^grunt-.*/, aliases.ROOT),
-        results = loader.matchInRoot(/^grunt-.*/),
+  it('find gulp plugins in ROOT', function(){
+    var plugins = dependencies.matches(/^gulp-.*/, aliases.ROOT),
+        results = loader.matchInRoot(/^gulp-.*/),
         error   = false;
 
     plugins.should.deep.equal(results);
 
     plugins.forEach(function pluginIterator (pluginName) {
-      if (pluginName.indexOf('grunt-') !== 0)
+      if (pluginName.indexOf('gulp-') !== 0)
         error = true;
     });
 
     error.should.equal(false);
+  });
+
+  it('find in external', function(){
+    var results = loader.matchInExternal(/^gulp-.*/);
+
+    results.should.deep.equal([]);
   });
 
   it('match with invalid regular expression', function(){

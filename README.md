@@ -1,24 +1,29 @@
-# [package.loader](https://github.com/luscus/package.loader)
-
-[![NPM](https://nodei.co/npm/package.loader.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/package.loader/)
+# package.loader
 
 [![NPM version](https://img.shields.io/npm/v/package.loader.svg?style=flat)](https://www.npmjs.com/package/package.loader "View this project on NPM")
-[![David](https://img.shields.io/david/luscus/package.loader.svg?style=flat)](https://david-dm.org/luscus/package.loader)
-[![David](https://img.shields.io/david/dev/luscus/package.loader.svg?style=flat)](https://david-dm.org/luscus/package.loader#info=devDependencies)
+[![NPM downloads](https://img.shields.io/npm/dm/package.loader.svg?style=flat)](https://www.npmjs.com/package/package.loader "View this project on NPM")
 [![NPM license](https://img.shields.io/npm/l/package.loader.svg?style=flat)](https://www.npmjs.com/package/package.loader "View this project on NPM")
-[![Omniref](https://img.shields.io/badge/Omniref-docs-orange.svg?style=flat)](https://www.omniref.com/js/npm/package.loader)
 [![flattr](https://img.shields.io/badge/flattr-donate-yellow.svg?style=flat)](http://flattr.com/thing/3817419/luscus-on-GitHub)
 
-Search/loads dependencies from the ROOT or SELF packages:
+![coverage](https://rawgit.com/luscus/package.loader/master/reports/coverage.svg)
+[![David](https://img.shields.io/david/luscus/package.loader.svg?style=flat)](https://david-dm.org/luscus/package.loader)
+[![David](https://img.shields.io/david/dev/luscus/package.loader.svg?style=flat)](https://david-dm.org/luscus/package.loader#info=devDependencies)
 
-- `SELF`: the package which has `package.loader` as dependency
-- `ROOT`: the first package in the package hierarchy
+Search/loads dependencies from three specific locations EXTERNAL, ROOT or SELF. Enables to create a plugin system for apps.
+
+- `SELF`: some library, the package which has `package.loader` as dependency
+- `ROOT`: some application, the first package in the package hierarchy
+- `EXTERNAL`: the deploy folder of the `ROOT` package
 
 <pre>
-    ROOT
+ EXTERNAL (deploy folder)
+  |
+  |_ app-1
+  |_ ROOT (app-2)
       |_ node_modules
             |
-            |_ PACKAGE_X
+            |_ ROOT.dependency.1
+            |_ ROOT.dependency.2
             |  |_ node_modules
             |    |
             |    |_ SELF
@@ -29,17 +34,16 @@ Search/loads dependencies from the ROOT or SELF packages:
             |    |    |_ SELF.dependency.2
             |    |    |_ SELF.dependency.3
             |    |
-            |    |_ PACKAGE_X.dependency.1
-            |    |_ PACKAGE_X.dependency.2
+            |    |_ package.dependency.1
+            |    |_ package.dependency.2
             |
-            |_ ROOT.dependency.1
-            |_ ROOT.dependency.2
             |_ ROOT.dependency.3
+            |_ ROOT.dependency.4
 </pre>
 
 `SELF` and `ROOT` may be the same packages.
 
-Each provided method is to be found in two flavors: directed towards `SELF` or `ROOT`.
+Each provided method is to be found in three flavors (except mocking): directed towards `SELF`, `ROOT` or `EXTERNAL`.
 
 This library can be used to implement support for a plugin system based on package names conventions.
 
@@ -60,7 +64,7 @@ Execute following line
 
 ## Usage
 
-### match, matchInRoot
+### match, matchInRoot, matchInExternal
 
 Parameters:
 - `regexp`: a regular expression
@@ -70,7 +74,7 @@ Return an Array with matching package names or an empty Array if no match was fo
     // return a list of dependencies which name starts with 'service'
     loader.match(/^service.*/);
 
-### require, requireFromRoot
+### require, requireFromRoot, requireFromExternal
 
 Parameters:
 - `package`: a regular expression or a string
@@ -83,7 +87,7 @@ Throws an error if too many or no plugin was found.
     loader.require('../tools/mytool');
     loader.require(/^service.*/);
 
-### load, loadFromRoot
+### load, loadFromRoot, loadFromExternal
 
 Parameters:
 - `regexp`: a regular expression

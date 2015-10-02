@@ -25,12 +25,21 @@ describe('Loader Library:', function() {
     loaderLib.SELF.should.be.an('object');
   });
 
+  it('should have property "EXTERNAL"', function(){
+    loaderLib.should.have.property('EXTERNAL');
+    loaderLib.EXTERNAL.should.be.an('object');
+  });
+
   it('match should be a method', function(){
     loaderLib.match.should.be.a('function');
   });
 
   it('matchInRoot should be a method', function(){
     loaderLib.matchInRoot.should.be.a('function');
+  });
+
+  it('matchInExternal should be a method', function(){
+    loaderLib.matchInExternal.should.be.a('function');
   });
 
   it('mock should be a method', function(){
@@ -53,12 +62,20 @@ describe('Loader Library:', function() {
     loaderLib.loadFromRoot.should.be.a('function');
   });
 
+  it('loadFromExternal should be a method', function() {
+    loaderLib.loadFromExternal.should.be.a('function');
+  });
+
   it('require should be a method', function() {
     loaderLib.require.should.be.a('function');
   });
 
   it('requireFromRoot should be a method', function() {
     loaderLib.requireFromRoot.should.be.a('function');
+  });
+
+  it('requireFromExternal should be a method', function() {
+    loaderLib.requireFromExternal.should.be.a('function');
   });
 
 });
