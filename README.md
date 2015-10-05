@@ -9,7 +9,7 @@
 [![David](https://img.shields.io/david/luscus/package.loader.svg?style=flat)](https://david-dm.org/luscus/package.loader)
 [![David](https://img.shields.io/david/dev/luscus/package.loader.svg?style=flat)](https://david-dm.org/luscus/package.loader#info=devDependencies)
 
-Search/loads dependencies from three specific locations EXTERNAL, ROOT or SELF. Enables to create a plugin system for apps.
+Search/loads/mocks dependencies from three specific locations EXTERNAL, ROOT or SELF. Enables to create a plugin system for apps.
 
 - `SELF`: some library, the package which has `package.loader` as dependency
 - `ROOT`: some application, the first package in the package hierarchy
