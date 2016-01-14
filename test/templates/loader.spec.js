@@ -1,25 +1,38 @@
 /* jshint node:true */
 /* jshint expr:true*/
 /* global describe */
+/* global before */
 /* global it */
 'use strict';
 
 require('chai').should();
 
 var expect    = require('chai').expect;
-var loader    = require('../../lib/templates/loader')({}),
-    crawler   = require('../../lib/tools/crawler'),
-    loaderLib = require('../../lib/package.loader');
+var loader    = require('../../lib/templates/loader')({});
+var dependencies = require('../../lib/tools/dependencies');
+var crawler   = require('../../lib/tools/crawler');
+var loaderLib = require('../../lib/package.loader');
+var mocker    = require('../../lib/templates/mocker')({});
+var mocked    = require('../../lib/data/mocked');
+var allData   = require('../../lib/data/hierarchy');
 
 // rerun in dev mode
 crawler.crawl(true);
 
 // adding mocked packages
-var fakePlugins = ['loader.plugin.one', 'loader.plugin.two', 'loader.plugin.three'];
+var fakePlugins = ['loader.plugin.one', 'loader.plugin.two', 'loader.plugin.three', 'cached.plugin'];
 
 fakePlugins.forEach(function pluginIterator (pluginName) {
   loaderLib.mock(pluginName, function () {
-    return pluginName;
+    return pluginName + '.self';
+  });
+
+  loaderLib.mockInRoot(pluginName + '.root', function () {
+    return pluginName + '.root';
+  });
+
+  loaderLib.mockInExternal(pluginName + '.external', function () {
+    return pluginName + '.external';
   });
 });
 
@@ -84,6 +97,39 @@ describe('[' + __filename.substring(__filename.indexOf('/test/') + 1) + '] - loa
   });
 
 
+  describe('private method removePackageFromCache', function() {
+    var mockedPackage = function () {return 'obsolete package';};
+
+    before(function (done) {
+      loaderLib.mock('obsolete.package', mockedPackage);
+      done();
+    });
+
+    it('should be a method', function () {
+      loader.removePackageFromCache.should.be.a('function');
+    });
+
+    it('should delete mocked cache', function () {
+      var packageValue = loaderLib.require('obsolete.package');
+      packageValue().should.equal('obsolete package');
+
+      var packagePath = dependencies.getPackagePath(loaderLib.SELF.path, 'obsolete.package');
+
+
+      loader.removePackageFromCache(packagePath);
+      expect(mocked[packagePath]).to.deep.equal(mockedPackage);
+      expect(require.cache[packagePath]).to.equal(undefined);
+    });
+
+    it('should delete package cache', function () {
+      var packagePath = dependencies.getPackagePath(loaderLib.SELF.path, 'gulp');
+
+      loader.removePackageFromCache(packagePath);
+      expect(require.cache[packagePath]).to.equal(undefined);
+    });
+  });
+
+
   describe('private method requirePackage', function() {
 
     it('should have a method "requirePackage"', function() {
@@ -95,7 +141,7 @@ describe('[' + __filename.substring(__filename.indexOf('/test/') + 1) + '] - loa
 
       expect(plugin())
         .to.be.a('string')
-        .and.to.equal('loader.plugin.two');
+        .and.to.equal('loader.plugin.two.self');
     });
 
     it('should require from provided name: loader.plugin.one', function() {
@@ -103,7 +149,7 @@ describe('[' + __filename.substring(__filename.indexOf('/test/') + 1) + '] - loa
 
       expect(plugin())
         .to.be.a('string')
-        .and.to.equal('loader.plugin.one');
+        .and.to.equal('loader.plugin.one.self');
     });
   });
 
@@ -149,7 +195,44 @@ describe('[' + __filename.substring(__filename.indexOf('/test/') + 1) + '] - loa
       var plugin = loaderLib.requireFromExternal(/package.loader/);
 
       expect(plugin)
-        .to.equal(loaderLib);
+          .to.equal(loaderLib);
+    });
+  });
+
+  describe('package cache management', function() {
+
+    describe('clear cache', function() {
+
+      it('should have a method "unload"', function () {
+        loaderLib.unload.should.be.a('function');
+      });
+
+      it('should have a method "unloadFromRoot"', function () {
+        loaderLib.unloadFromRoot.should.be.a('function');
+      });
+
+      it('should have a method "unloadFromExternal"', function () {
+        loaderLib.unloadFromExternal.should.be.a('function');
+      });
+
+      it.skip('should remove ', function () {
+        var plugin = loaderLib.load(/^cached.plugin.*/);
+
+        console.log('allDatat',allData);
+        console.log(loaderLib.EXTERNAL, plugin);
+
+        expect(plugin())
+            .to.be.a('string')
+            .and.to.equal('loader.plugin.two');
+      });
+
+      it('should require from provided name: loader.plugin.one', function () {
+        var plugin = loader.requirePackage('loader.plugin.one', loaderLib.SELF);
+
+        expect(plugin())
+            .to.be.a('string')
+            .and.to.equal('loader.plugin.one.self');
+      });
     });
   });
 
