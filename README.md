@@ -78,6 +78,7 @@ Return an Array with matching package names or an empty Array if no match was fo
 
 Parameters:
 - `package`: a regular expression or a string
+- `force`: boolean, disabling cache and force the loading of the wanted package
 
 Loads one requested plugin, but the regexp has to have an unique match.
 
@@ -87,10 +88,15 @@ Throws an error if too many or no plugin was found.
     loader.require('../tools/mytool');
     loader.require(/^service.*/);
 
+    // force reload mytool
+    loader.require('../tools/mytool', true);
+
 ### load, loadFromRoot, loadFromExternal
 
 Parameters:
 - `regexp`: a regular expression
+- `target`: an object in which the package will be loaded into. Package will be available under <Object>.<package_name>
+- `doThrow`: boolean, if no package was found and throwing is enabled an error will be raised
 
 Loads one requested plugin, but the regexp has to have a at least one match.
 
@@ -99,7 +105,19 @@ Throws an error if no plugin was found.
     // return a list of dependencies which name starts with 'service'
     var myplugin = loader.load(/^service.*/);
 
-### mock, mockInRoot
+### unload, unloadFromRoot, unloadFromExternal
+
+Parameters:
+- `package`: a regular expression or a string
+
+Loads one requested plugin, but the regexp has to have a at least one match.
+
+Throws an error if no plugin was found.
+
+    // return a list of dependencies which name starts with 'service'
+    var myplugin = loader.load(/^service.*/);
+
+### mock, mockInRoot, mockInExternal
 
 Parameters:
 - `packageName`: a package name
@@ -119,7 +137,7 @@ This can be used for testing.
 
 
 -------------------
-Copyright (c) 2014 Luscus (luscus.redbeard@gmail.com)
+Copyright (c) 2014-2016 Luscus (luscus.redbeard@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
