@@ -16,12 +16,27 @@ crawler.crawl(true);
 
 describe('Aliases:', function(){
 
-  it('aliases should have property "ROOT"', function(){
-    aliases.should.have.property('ROOT');
-    aliases.ROOT.should.be.an('object');
+    it('aliases should have property "isDeep"', function(){
+        aliases.should.have.property('isDeep');
+        aliases.isDeep.should.be.an('boolean');
 
-    if (crawler.devMode) aliases.ROOT.name.should.equal(info.name);
-  });
+        if (crawler.devMode) aliases.isDeep.should.equal(false);
+        else aliases.isDeep.should.equal(true);
+    });
+
+    it('aliases should have property "ROOT"', function(){
+        aliases.should.have.property('ROOT');
+        aliases.ROOT.should.be.an('object');
+
+        if (crawler.devMode) aliases.ROOT.name.should.equal(info.name);
+    });
+
+    it('aliases should have property "EXTERNAL"', function(){
+        aliases.should.have.property('EXTERNAL');
+        aliases.EXTERNAL.should.be.an('object');
+
+        if (crawler.devMode) aliases.EXTERNAL.name.should.equal('deploy.folder');
+    });
 
   it('aliases should have property "SELF"', function(){
     aliases.should.have.property('ROOT');
