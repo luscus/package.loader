@@ -78,7 +78,7 @@ Return an Array with matching package names or an empty Array if no match was fo
 
 Parameters:
 - `package`: a regular expression or a string
-- `force`: boolean, disabling cache and force the loading of the wanted package
+- `force` optional: boolean, disabling cache and force the loading of the wanted package
 
 Loads one requested plugin, but the regexp has to have an unique match.
 
@@ -95,8 +95,8 @@ Throws an error if too many or no plugin was found.
 
 Parameters:
 - `regexp`: a regular expression
-- `target`: an object in which the package will be loaded into. Package will be available under <Object>.<package_name>
-- `doThrow`: boolean, if no package was found and throwing is enabled an error will be raised
+- `target` optional: an object in which the packages will be loaded into. Packages will be available under <Object>.<package_name>
+- `doThrow` optional: boolean, if no package was found and throwing is enabled an error will be raised
 
 Loads one requested plugin, but the regexp has to have a at least one match.
 
@@ -109,6 +109,7 @@ Throws an error if no plugin was found.
 
 Parameters:
 - `package`: a regular expression or a string
+- `target` optional: an object in which the packages will be removed from.
 
 Loads one requested plugin, but the regexp has to have a at least one match.
 
@@ -134,6 +135,13 @@ This can be used for testing.
 
     mock(); // prints "hello world"
 
+
+### isMocked
+
+Parameters:
+- `absolutePackagePath`: a package path
+
+Check whether or not this package is mocked. Returns a boolean.
 
 
 -------------------
