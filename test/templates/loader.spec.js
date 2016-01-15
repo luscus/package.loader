@@ -1,6 +1,7 @@
 /* jshint node:true */
 /* jshint expr:true*/
 /* global describe */
+/* global beforeEach */
 /* global before */
 /* global it */
 'use strict';
@@ -12,32 +13,28 @@ var loader    = require('../../lib/templates/loader')({});
 var dependencies = require('../../lib/tools/dependencies');
 var crawler   = require('../../lib/tools/crawler');
 var loaderLib = require('../../lib/package.loader');
-var mocker    = require('../../lib/templates/mocker')({});
 var mocked    = require('../../lib/data/mocked');
-var allData   = require('../../lib/data/hierarchy');
+var aliases   = require('../../lib/tools/aliases');
+var mocker    = require('../../lib/templates/mocker')({});
+var utils     = require('../utils');
 
 // rerun in dev mode
 crawler.crawl(true);
 
 // adding mocked packages
-var fakePlugins = ['loader.plugin.one', 'loader.plugin.two', 'loader.plugin.three', 'cached.plugin'];
+var fakePlugins  = ['loader.plugin.one', 'loader.plugin.two', 'loader.plugin.three'];
 
-fakePlugins.forEach(function pluginIterator (pluginName) {
-  loaderLib.mock(pluginName, function () {
-    return pluginName + '.self';
-  });
+var levelMethods = utils.getLevelMethods(['load', 'unload', 'require'], aliases);
+var aliasNames   = Object.getOwnPropertyNames(aliases);
 
-  loaderLib.mockInRoot(pluginName + '.root', function () {
-    return pluginName + '.root';
-  });
-
-  loaderLib.mockInExternal(pluginName + '.external', function () {
-    return pluginName + '.external';
-  });
-});
 
 
 describe('[' + __filename.substring(__filename.indexOf('/test/') + 1) + '] - loader ', function() {
+  beforeEach(function (done) {
+    mocker.removeMocks();
+    utils.mockInAllLevels(fakePlugins, aliases);
+    done();
+  });
 
   describe('private method resolvePackageName', function() {
 
@@ -45,11 +42,11 @@ describe('[' + __filename.substring(__filename.indexOf('/test/') + 1) + '] - loa
       loader.resolvePackageName.should.be.a('function');
     });
 
-    it('should find one match with regex: /^.*two$/', function() {
-      var plugin = loader.resolvePackageName(/^.*two$/, loaderLib.SELF);
+    it('should find one match with regex: /^.*two\.SELF$/', function() {
+      var plugin = loader.resolvePackageName(/^.*two\.SELF$/, loaderLib.SELF);
 
       expect(plugin).to.be.a('string')
-        .and.to.equal('loader.plugin.two');
+        .and.to.equal('loader.plugin.two.SELF');
     });
 
     it('should throw an error if more than one match was found: /^loader.plugin.*/', function() {
@@ -72,13 +69,13 @@ describe('[' + __filename.substring(__filename.indexOf('/test/') + 1) + '] - loa
       loader.loadPackages.should.be.a('function');
     });
 
-    it('should return matching packages: /^loader.plugin.(one|three)$/', function() {
-      var plugins = loader.loadPackages(/^loader.plugin.(one|three)$/, loaderLib.SELF);
+    it('should return matching packages: /^loader.plugin.(one.SELF|three.SELF)$/', function() {
+      var plugins = loader.loadPackages(/^loader.plugin.(one.SELF|three.SELF)$/, loaderLib.SELF);
 
       expect(plugins)
         .to.be.an('object')
-        .and.to.have.property('loader.plugin.one');
-      expect(plugins).to.have.property('loader.plugin.three');
+        .and.to.have.property('loader.plugin.one.SELF');
+      expect(plugins).to.have.property('loader.plugin.three.SELF');
     });
 
     it('should 1. return an empty object if no package was found', function() {
@@ -110,14 +107,14 @@ describe('[' + __filename.substring(__filename.indexOf('/test/') + 1) + '] - loa
     });
 
     it('should delete mocked cache', function () {
-      var packageValue = loaderLib.require('obsolete.package');
-      packageValue().should.equal('obsolete package');
+      var packageValue = loaderLib.require('loader.plugin.two.SELF');
+      packageValue().should.equal('loader.plugin.two.SELF');
 
-      var packagePath = dependencies.getPackagePath(loaderLib.SELF.path, 'obsolete.package');
+      var packagePath = dependencies.getPackagePath(loaderLib.SELF.path, 'loader.plugin.two.SELF');
 
 
       loader.removePackageFromCache(packagePath);
-      expect(mocked[packagePath]).to.deep.equal(mockedPackage);
+      expect(mocked[packagePath]).to.equal(packageValue);
       expect(require.cache[packagePath]).to.equal(undefined);
     });
 
@@ -136,102 +133,198 @@ describe('[' + __filename.substring(__filename.indexOf('/test/') + 1) + '] - loa
       loader.requirePackage.should.be.a('function');
     });
 
-    it('should require from provided regex: /^.*two$/', function() {
-      var plugin = loader.requirePackage(/^.*two$/, loaderLib.SELF);
+    it('should require from provided regex: /^.*two.SELF$/', function() {
+      var plugin = loader.requirePackage(/^.*two.SELF$/, loaderLib.SELF);
 
       expect(plugin())
         .to.be.a('string')
-        .and.to.equal('loader.plugin.two.self');
+        .and.to.equal('loader.plugin.two.SELF');
     });
 
-    it('should require from provided name: loader.plugin.one', function() {
-      var plugin = loader.requirePackage('loader.plugin.one', loaderLib.SELF);
+    it('should require mocked from provided name: loader.plugin.one.SELF', function() {
+      var plugin = loader.requirePackage('loader.plugin.one.SELF', loaderLib.SELF);
 
       expect(plugin())
         .to.be.a('string')
-        .and.to.equal('loader.plugin.one.self');
+        .and.to.equal('loader.plugin.one.SELF');
+    });
+
+    it('should require from provided name: gulp', function() {
+      var plugin = loader.requirePackage('gulp', loaderLib.SELF);
+
+      expect(plugin.isRunning)
+        .to.be.a('boolean')
+        .and.to.equal(true);
     });
   });
 
-  describe('public loading mixins', function() {
-    it('load should be a method', function () {
-      loaderLib.load.should.be.a('function');
+  describe('provides "require" capacities and', function() {
 
-      var plugins = loaderLib.load(/chai/);
-
-      expect(plugins).to.have.property('chai');
+    levelMethods.require.forEach(function methodIterator (methodName) {
+      it('should have a public method "'+methodName+'"', function () {
+        loaderLib[methodName].should.be.a('function');
+      });
     });
 
-    it('loadFromRoot should be a method', function () {
-      loaderLib.loadFromRoot.should.be.a('function');
+    aliasNames.forEach(function aliasIterator (alias) {
+      var levelMethodName  = utils.getLevelMethodName('require', alias);
+      var levelPluginName  = 'loader.plugin.one.' + alias;
 
-      var plugins = loaderLib.loadFromRoot(/chai/);
+      it('should require 1 package from ' + alias + ' with package name "' + levelPluginName + '"', function () {
+        var plugin         = loaderLib[levelMethodName](levelPluginName);
 
-      expect(plugins).to.have.property('chai');
+        expect(plugin()).to.deep.equal(levelPluginName);
+      });
     });
 
-    it('loadFromExternal should be a method', function () {
-      loaderLib.loadFromExternal.should.be.a('function');
+    aliasNames.forEach(function aliasIterator (alias) {
+      var levelMethodName  = utils.getLevelMethodName('require', alias);
+      var levelPluginName  = 'loader.plugin.one.' + alias;
 
-      var plugins = loaderLib.loadFromExternal(/package.loader/);
+      it('should force update of package from ' + alias + ' with package name "' + levelPluginName + '"', function () {
+        var plugin         = loaderLib[levelMethodName](levelPluginName);
 
-      expect(plugins['package.loader'])
-        .to.equal(loaderLib);
+        expect(plugin()).to.equal(levelPluginName);
+
+        mocker.mock(levelPluginName, function () {return levelPluginName + '.new';}, aliases[alias]);
+
+        plugin         = loaderLib[levelMethodName](levelPluginName, true);
+        expect(plugin()).to.equal(levelPluginName + '.new');
+      });
     });
   });
 
-  describe('public requiring mixins', function() {
-    it('require should be a method', function () {
-      loaderLib.require.should.be.a('function');
+  describe('provides "load" capacities and', function() {
+
+    levelMethods.load.forEach(function methodIterator (methodName) {
+      it('should have a public method "'+methodName+'"', function () {
+        loaderLib[methodName].should.be.a('function');
+      });
     });
 
-    it('requireFromRoot should be a method', function () {
-      loaderLib.requireFromRoot.should.be.a('function');
+    aliasNames.forEach(function aliasIterator (alias) {
+      var levelMethodName  = utils.getLevelMethodName('load', alias);
+      var levelPluginNames = utils.getLevelPluginNames(fakePlugins, alias);
+
+      it('should load 3 packages from ' + alias + ' with regex /^loader.plugin.*/', function () {
+        var plugins         = loaderLib[levelMethodName]('loader.plugin.*.' + alias);
+
+        expect(Object.getOwnPropertyNames(plugins)).to.deep.equal(levelPluginNames);
+      });
     });
 
-    it('requireFromExternal should be a method', function () {
-      loaderLib.requireFromExternal.should.be.a('function');
+    aliasNames.forEach(function aliasIterator (alias) {
+      var levelPluginRegex = 'loader.plugin.*.' + alias;
 
-      var plugin = loaderLib.requireFromExternal(/package.loader/);
+      it('should load 3 mixins into an Object with regex /' + levelPluginRegex + '/', function () {
+        var levelLoadName    = utils.getLevelMethodName('load', alias);
+        var levelPluginNames = utils.getLevelPluginNames(fakePlugins, alias);
 
-      expect(plugin)
-          .to.equal(loaderLib);
+        var targetObject     = {};
+        Object.getOwnPropertyNames(loaderLib[levelLoadName](levelPluginRegex, targetObject));
+
+        var pluginNames = Object.getOwnPropertyNames(targetObject);
+
+
+        // check returned plugins
+        expect(pluginNames).to.deep.equal(levelPluginNames);
+
+        pluginNames.forEach(function pluginIterator (pluginName) {
+          var pluginPath = dependencies.getPackagePath(aliases[alias].path, pluginName);
+
+          // check for clear cache
+          expect(require.cache[pluginPath]).to.not.equal(undefined);
+          expect(targetObject[pluginName]).to.not.equal(undefined);
+        });
+      });
     });
   });
 
-  describe('package cache management', function() {
+  describe('provides cache management with', function() {
 
-    describe('clear cache', function() {
+    describe('"unload" and', function() {
 
-      it('should have a method "unload"', function () {
-        loaderLib.unload.should.be.a('function');
+      levelMethods.unload.forEach(function methodIterator (methodName) {
+        it('should have a public method "'+methodName+'"', function () {
+          loaderLib[methodName].should.be.a('function');
+        });
       });
 
-      it('should have a method "unloadFromRoot"', function () {
-        loaderLib.unloadFromRoot.should.be.a('function');
+      aliasNames.forEach(function aliasIterator (alias) {
+        var levelPluginName = utils.getLevelPluginName('loader.plugin.one', alias);
+
+        it('should remove package "' + levelPluginName + '" from cache in level ' + alias, function () {
+          var levelLoadName   = utils.getLevelMethodName('require', alias);
+          var levelUnloadName = utils.getLevelMethodName('unload', alias);
+
+          var plugin          = loaderLib[levelLoadName](levelPluginName);
+
+          // check returned plugin
+          expect(plugin()).to.equal(levelPluginName);
+
+          // remove plugin from cache
+          loaderLib[levelUnloadName](levelPluginName);
+
+          var pluginPath = dependencies.getPackagePath(aliases[alias].path, levelPluginName);
+
+          // check for clear cache
+          expect(require.cache[pluginPath]).to.equal(undefined);
+        });
       });
 
-      it('should have a method "unloadFromExternal"', function () {
-        loaderLib.unloadFromExternal.should.be.a('function');
+      aliasNames.forEach(function aliasIterator (alias) {
+        var levelPluginRegex = 'loader.plugin.*.' + alias;
+
+        it('should remove 3 packages from cache in level ' + alias + ' with regex /' + levelPluginRegex + '/', function () {
+          var levelLoadName    = utils.getLevelMethodName('load', alias);
+          var levelUnloadName  = utils.getLevelMethodName('unload', alias);
+          var levelPluginNames = utils.getLevelPluginNames(fakePlugins, alias);
+
+          var pluginNames     = Object.getOwnPropertyNames(loaderLib[levelLoadName](levelPluginRegex));
+
+          // check returned plugins
+          expect(pluginNames).to.deep.equal(levelPluginNames);
+
+          // remove plugin from cache
+          loaderLib[levelUnloadName](levelPluginRegex);
+
+          pluginNames.forEach(function pluginIterator (pluginName) {
+            var pluginPath = dependencies.getPackagePath(aliases[alias].path, pluginName);
+
+            // check for clear cache
+            expect(require.cache[pluginPath]).to.equal(undefined);
+          });
+        });
       });
 
-      it.skip('should remove ', function () {
-        var plugin = loaderLib.load(/^cached.plugin.*/);
+      aliasNames.forEach(function aliasIterator (alias) {
+        var levelPluginRegex = 'loader.plugin.*.' + alias;
 
-        console.log('allDatat',allData);
-        console.log(loaderLib.EXTERNAL, plugin);
+        it('should remove 3 mixins from an Object with regex /' + levelPluginRegex + '/', function () {
+          var levelLoadName    = utils.getLevelMethodName('load', alias);
+          var levelUnloadName  = utils.getLevelMethodName('unload', alias);
+          var levelPluginNames = utils.getLevelPluginNames(fakePlugins, alias);
 
-        expect(plugin())
-            .to.be.a('string')
-            .and.to.equal('loader.plugin.two');
-      });
+          var targetObject     = {};
+          Object.getOwnPropertyNames(loaderLib[levelLoadName](levelPluginRegex, targetObject));
 
-      it('should require from provided name: loader.plugin.one', function () {
-        var plugin = loader.requirePackage('loader.plugin.one', loaderLib.SELF);
+          var pluginNames = Object.getOwnPropertyNames(targetObject);
 
-        expect(plugin())
-            .to.be.a('string')
-            .and.to.equal('loader.plugin.one.self');
+
+          // check returned plugins
+          expect(pluginNames).to.deep.equal(levelPluginNames);
+
+          // remove plugin from cache
+          loaderLib[levelUnloadName](levelPluginRegex, targetObject);
+
+          pluginNames.forEach(function pluginIterator (pluginName) {
+            var pluginPath = dependencies.getPackagePath(aliases[alias].path, pluginName);
+
+            // check for clear cache
+            expect(require.cache[pluginPath]).to.not.equal(undefined);
+            expect(targetObject[pluginName]).to.equal(undefined);
+          });
+        });
       });
     });
   });
