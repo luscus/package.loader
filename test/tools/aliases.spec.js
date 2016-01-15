@@ -16,14 +16,6 @@ crawler.crawl(true);
 
 describe('Aliases:', function(){
 
-    it('aliases should have property "isDeep"', function(){
-        aliases.should.have.property('isDeep');
-        aliases.isDeep.should.be.an('boolean');
-
-        if (crawler.devMode) aliases.isDeep.should.equal(false);
-        else aliases.isDeep.should.equal(true);
-    });
-
     it('aliases should have property "ROOT"', function(){
         aliases.should.have.property('ROOT');
         aliases.ROOT.should.be.an('object');
