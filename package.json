@@ -1,7 +1,7 @@
 {
   "name": "package.loader",
   "license": "MIT",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "homepage": "https://github.com/luscus/package.loader",
   "author": "https://github.com/luscus/package.loader/graphs/contributors",
   "description": "Search/loads dependencies from three specific locations EXTERNAL, ROOT or SELF. Enables to create a plugin system for apps.",
@@ -9,6 +9,9 @@
     "root",
     "package",
     "hierarchy",
+    "mixin",
+    "cache",
+    "unload",
     "plugin",
     "module",
     "find",
@@ -17,8 +20,11 @@
     "dependency",
     "dependencies"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "clone": "^1.0.2"
+  },
   "devDependencies": {
+    "camelize": "^1.0.0",
     "chai": "*",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
@@ -33,7 +39,7 @@
     "url": "git://github.com/luscus/package.loader.git"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "gulp test"
   },
   "bugs": "https://github.com/luscus/package.loader/issues",
   "main": "./lib/package.loader.js"

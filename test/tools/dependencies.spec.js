@@ -8,7 +8,7 @@ require('chai').should();
 var Path         = require('path'),
     dependencies = require('../../lib/tools/dependencies'),
     packageInfo  = require('../../package.json'),
-    packages     = [].concat(Object.keys(packageInfo.dependencies), Object.keys(packageInfo.devDependencies));
+    packages     = [].concat(Object.keys(packageInfo.dependencies), Object.keys(packageInfo.devDependencies)).sort();
 
 describe('Tool Dependencies -', function(){
 

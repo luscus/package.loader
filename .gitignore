@@ -2,6 +2,7 @@ node_modules/
 bower_components/
 .idea/
 coverage/
+etc/
 config/runtime.json
 npm-debug.log
 .DS_Store

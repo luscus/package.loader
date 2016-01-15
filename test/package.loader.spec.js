@@ -66,6 +66,18 @@ describe('Loader Library:', function() {
     loaderLib.loadFromExternal.should.be.a('function');
   });
 
+  it('unload should be a method', function() {
+    loaderLib.unload.should.be.a('function');
+  });
+
+  it('unloadFromRoot should be a method', function() {
+    loaderLib.unloadFromRoot.should.be.a('function');
+  });
+
+  it('unloadFromExternal should be a method', function() {
+    loaderLib.unloadFromExternal.should.be.a('function');
+  });
+
   it('require should be a method', function() {
     loaderLib.require.should.be.a('function');
   });
