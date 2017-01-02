@@ -21,7 +21,7 @@
     "dependencies"
   ],
   "dependencies": {
-    "clone": "^1.0.2"
+    "clone": "^2.1.0"
   },
   "devDependencies": {
     "camelize": "^1.0.0",
