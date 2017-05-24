@@ -32,7 +32,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.6",
     "gulpfile.basics": "*",
-    "mocha": "*"
+    "mocha": ">=3.4.2"
   },
   "repository": {
     "type": "git",
